@@ -18,6 +18,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 64, 1, 1)];
+    lable.text = @"h";
+    [lable sizeToFit];
+    lable.backgroundColor = [UIColor redColor];
+    NSLog(@"%@",NSStringFromCGSize(lable.frame.size));
+    [self.view addSubview:lable];
+    [lable release];
     
 }
 

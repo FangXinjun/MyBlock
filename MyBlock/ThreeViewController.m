@@ -8,6 +8,8 @@
 
 #import "ThreeViewController.h"
 
+#define NSSTRING_PRETTY_FUNCTION [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSASCIIStringEncoding]
+
 @interface ThreeViewController ()
 
 @end
@@ -21,6 +23,26 @@
     if (_testBlock) {
         _testBlock();
     }
+    
+    NSArray *syms = [NSThread  callStackSymbols];
+    if ([syms count] > 1) {
+        NSLog(@"<%@ %p> %@ - caller: %@ ", [self class], self, NSStringFromSelector(_cmd),[syms objectAtIndex:1]);
+    } else {
+        NSLog(@"<%@ %p> %@", [self class], self, NSStringFromSelector(_cmd));
+    }
+    
+    NSString *str = @"11111";
+    NSString *str1 = @"22222";
+    int a = 2;
+    static NSString *strStatic = @"static";
+    NSMutableString *strM = [[NSMutableString alloc] initWithFormat:@"可变"];
+    NSLog(@"str %p",str);
+    NSLog(@"str1 %p",str1);
+    NSLog(@"a %p",&a);
+    NSLog(@"strStatic %p",strStatic);
+    NSLog(@"strM %p",strM);
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,6 +51,7 @@
 }
 
 - (void)dealloc{
+    NSLog(@"Function Name:%@",NSSTRING_PRETTY_FUNCTION); //打印方法名称
     NSLog(@"dealloc %@",self.class);
     [super dealloc];
 

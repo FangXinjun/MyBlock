@@ -10,6 +10,7 @@
 #import "ThreeViewController.h"
 
 @interface TwoVC ()
+
 @property (nonatomic, copy) NSString             *name;
 
 @end
@@ -22,11 +23,19 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self foo];
     
+
     
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, 100, 100)];
     btn.backgroundColor = [UIColor greenColor];
     [btn addTarget:self action:@selector(btnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
+    
+    NSLog(@"%p",&btn);
+    NSLog(@"%p",&self);
+    
+    NSLog(@"%@",[NSThread callStackSymbols]);
+
+
 }
 
 - (void)btnClick{
@@ -37,10 +46,14 @@
     __block typeof(self) weakSelf = self;
     three.testBlock = ^{
         NSLog(@"%@ \n", weakSelf.name);
-//        NSLog(@"%@ \n", self.name);  // 不会释放self
-
+        NSLog(@"%@ \n", self.name);  // 不会释放self
+        [weakSelf logName];
     };
     [self.navigationController pushViewController:three animated:YES];
+    
+    NSLog(@"%p",&self);
+    NSLog(@"%p",&three);
+
     [three release];
 }
 
@@ -63,6 +76,10 @@
     Block_release(blkInHeap);  // 不释放掉block,self 也不会释放.(或者弱引用self)
 }
 
+- (void)logName
+{
+    NSLog(@"三调用 %@",self.name);
+}
 
 - (void)dealloc{
     NSLog(@"dealloc %@",self.class);
