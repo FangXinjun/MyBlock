@@ -10,6 +10,9 @@
 
 #define NSSTRING_PRETTY_FUNCTION [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSASCIIStringEncoding]
 
+static void                 (^myTestBlock)();
+
+
 @interface ThreeViewController ()
 
 @end
@@ -23,7 +26,7 @@
     if (_testBlock) {
         _testBlock();
     }
-    
+    myTestBlock = _testBlock;
     NSArray *syms = [NSThread  callStackSymbols];
     if ([syms count] > 1) {
         NSLog(@"<%@ %p> %@ - caller: %@ ", [self class], self, NSStringFromSelector(_cmd),[syms objectAtIndex:1]);
@@ -32,14 +35,13 @@
     }
     
     NSString *str = @"11111";
-    NSString *str1 = @"22222";
     int a = 2;
     static NSString *strStatic = @"static";
     NSMutableString *strM = [[NSMutableString alloc] initWithFormat:@"可变"];
     NSLog(@"str %p",str);
-    NSLog(@"str1 %p",str1);
     NSLog(@"a %p",&a);
     NSLog(@"strStatic %p",strStatic);
+    NSLog(@"myTestBlockStatic %p",myTestBlock);
     NSLog(@"strM %p",strM);
 
     
